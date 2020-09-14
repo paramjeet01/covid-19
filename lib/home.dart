@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
                           height: 4,
                         ),
                         Text(
-                          "stay safe",
+                          "Stay safe",
                           style: GoogleFonts.openSans(
                               textStyle: TextStyle(
                                   color: Hexcolor('#DBCBD8'),
@@ -66,7 +66,6 @@ class _HomeState extends State<Home> {
         ],
 
       ),
-
 
     );
   }

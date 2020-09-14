@@ -1,79 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'graph.dart';
 import 'service.dart';
 
-class graph extends StatefulWidget {
-  @override
-  _graphState createState() => _graphState();
+class graph extends StatefulWidget{
+  final Widget child;
+  graph({Key key,this.child}):super(key:key);
+  Graph createState() => Graph();
+
 }
+class Graph extends State<graph> {
+  // This widget is the root of your application.
+  List<charts.Series<Task,String>> _comp;
 
-class _graphState extends State<graph> {
+  _generateData(){
+    var pie=[
+      new Task("male",60,Colors.blue[900]),
+      new Task("female",40,Colors.blueAccent),
 
-  Future<Graph> futuregraph;
+    ];
 
-  @override
-  void initState() {
+    _comp.add(
+      charts.Series(
+        data:pie,
+        domainFn : (Task task,_) =>task.gender,
+        measureFn:(Task task,_) => task.age,
+        colorFn:(Task task,_) => charts.ColorUtil.fromDartColor(task.colorval),id:"age and gender",labelAccessorFn: (Task row,_)=>'${row.gender}',
+
+      ),
+    );
+  }
+  void initState(){
     super.initState();
-    futuregraph = service.getgraphs();
+    _comp = List<charts.Series<Task,String>>();
+    _generateData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: FutureBuilder<Graph>(
-          future: futuregraph,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Statedata(data:snapshot.data.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+          appBar: AppBar(
+              backgroundColor: Hexcolor('#101935'),
+              title: Text('Tests and Confirmed cases'),
 
-            // By default, show a loading spinner.
-            return CircularProgressIndicator();
-          },
-        ),
-      ),
-    );
+          ),
+
+          body:
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          Text('Comparison'),
+                          SizedBox(height: 10.0,),
+                          Expanded(
+                              child:charts.PieChart(
+                                _comp,
+                                animate:true,
+                                animationDuration: Duration(seconds: 5),
+                                behaviors: [
+                                  new charts.DatumLegend(
+                                      outsideJustification: charts.OutsideJustification.endDrawArea,
+                                      horizontalFirst: false,
+                                      desiredMaxRows: 2,
+                                      cellPadding: new EdgeInsets.only(right: .0,bottom:4.0),
+                                      entryTextStyle: charts.TextStyleSpec(color: charts.MaterialPalette.purple.shadeDefault,
+                                          fontFamily: "Georgia",
+                                          fontSize: 11)
+                                  )
+                                ],
+                                defaultRenderer: new charts.ArcRendererConfig(
+                                    arcWidth: 100,
+                                    arcRendererDecorators:[
+                                      new charts.ArcLabelDecorator(
+                                          labelPosition: charts.ArcLabelPosition.inside
+                                      )
+                                    ]
+                                ),
+                              ))
+                        ],
+                      ),
+                    )
+                ),
+
+
+          ),
+        );
   }
 }
 
+class Task{
+  String gender;
+  int age;
+  Color colorval;
+  Task(this.gender,this.age,this.colorval);
 
-class Statedata extends StatelessWidget {
-  List<Datum> data;
-
-  Statedata({this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Text('Locations'),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return listitem(index);
-        },
-      ),
-    );
-  }
-
-  listitem(index) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-      child: Card(
-        child: ListTile(
-          title: Text(data[index].patientId.toString()),
-          subtitle: Text(data[index].status),
-        ),
-      ),
-    );
-  }
 }
-

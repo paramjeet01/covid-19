@@ -8,6 +8,7 @@ import 'package:test_covid/home.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
+  debugShowCheckedModeBanner: false,
   routes: {
     '/': (context) => Home(),
     '/locations' : (context) => jsonparse(),

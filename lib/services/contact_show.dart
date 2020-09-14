@@ -77,9 +77,10 @@ class Statedata extends StatelessWidget {
               launch(no);
             },
             title: Text(regional[index].loc),
+            trailing: Icon(Icons.phone),
             subtitle: Text(regional[index].number),
+            ),
           ),
-        ),
       );
     }
 

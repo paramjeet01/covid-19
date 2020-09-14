@@ -76,10 +76,10 @@ class _GridDashboardState extends State<GridDashboard> {
                       child: Text(
                           'View',
                           style: TextStyle(
-                          color: Hexcolor('#161925'),
+                          color: Hexcolor('#F2FDFF'),
                       )
                       ),
-                      color: Hexcolor('#F2FDFF'),
+                      color: Hexcolor('#101935'),
                       onPressed: () {
 
                         switch(data.val) {

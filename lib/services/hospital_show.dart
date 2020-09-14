@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'hospitals.dart';
 import 'service.dart';
 
@@ -49,28 +50,22 @@ class Statedata extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Text('Locations'),
+        backgroundColor: Hexcolor('#101935'),
+        title: Text('Hospital Dashboard'),
         centerTitle: true,
         elevation: 0.0,
       ),
       body: ListView.builder(
         itemCount: regional.length,
         itemBuilder: (context, index){
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 1 ,horizontal: 4),
-            child: Column(
-              children: [
-                Card(
-                  child: ListTile(
-                    onTap: () {},
-                    title: Text(regional[index].state),
-                    subtitle: Text((regional[index].totalBeds).toString()),
-                  ),
-                ),
-              ],
+          return
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 1 ,horizontal: 4),
+              child: Card(
+                child: Text('StateName: ${regional[index].state} \nRural hospitals:${regional[index].ruralHospitals} \nRural Beds:${regional[index].ruralBeds} \nUrban Beds:${regional[index].urbanBeds} \n Total hospitals:${regional[index].totalHospitals}\nTotal Beds:${regional[index].totalBeds}'
+              ),
             ),
-          );
+            );
         },
       ),
     );

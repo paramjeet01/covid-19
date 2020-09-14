@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'notification.dart';
 import 'service.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -121,25 +122,37 @@ class Statedata extends StatelessWidget {
                                   Container(
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(
+                                       child: Text(
                                         notifications[index].title.length > 9 ?
                                         (notifications[index].title.substring(10)):
                                         (notifications[index].title),
                                         style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 20.0,
-                                        ),),
+                                          fontSize: 19.0,
+                                        ),
+                                           textAlign: TextAlign.center
+                                      ),
+
                                     ),
                                   ),
                                   Container(
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(
+                                      child: InkWell(
+                                        child: Text(
                                         notifications[index].link,
                                         style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 16.0,
-                                        ),),
+                                          fontSize: 13.0,
+                                        ),
+                                            textAlign: TextAlign.center
+                                        ),
+
+                                        onTap: (){
+                                          String url = notifications[index].link;
+                                          launch(url);
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ]
